@@ -56,33 +56,6 @@ This project requires the following configuration files:
 }
 ```
 
-## Setup Instructions
-
-### Prerequisites
-
-- .NET 9.0 SDK installed
-- Microsoft SQL Server
-- Twilio Account & API Credentials
-- OpenAI API Key
-- Hangfire configured for background job management
-
-### Installation Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/personal-assistant.git
-   cd personal-assistant
-   ```
-2. Configure **appsettings.json** and **appsettings.Development.json** with Twilio, OpenAI, and Hangfire settings.
-3. Apply database migrations:
-   ```bash
-   dotnet ef database update
-   ```
-4. Run the application:
-   ```bash
-   dotnet run
-   ```
-
 ## Twilio Integration
 
 The project has a single controller that needs to be pointed to from the **Twilio API** for handling SMS and call interactions. Ensure the Twilio webhook is configured to send requests to your deployed API endpoint.
