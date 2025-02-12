@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.29.3" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.69.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="hangfire" Version="1.8.17" />
     <PackageReference Include="Hangfire.Core" Version="1.8.17" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.8.17" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -29,5 +35,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     <PackageReference Include="Twilio" Version="7.8.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseService\DatabaseService.csproj" />
+  </ItemGroup>
+
+<ItemGroup>
+    <Protobuf Include="Utilities/greet.proto" GrpcServices="Client" />
+</ItemGroup>
 
 </Project>

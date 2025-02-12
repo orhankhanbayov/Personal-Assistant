@@ -1,6 +1,9 @@
+using DBService;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
 using PersonalAssistant.Models;
 using PersonalAssistant.Services;
+using PersonalAssistant.Utilities;
 using Twilio.TwiML;
 
 namespace PersonalAssistant.Controllers
@@ -72,6 +75,24 @@ namespace PersonalAssistant.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Callback failed");
+				return BadRequest($"Request failed: {ex.Message}");
+			}
+		}
+
+		[HttpPost("TestGRPCWorking")]
+		public async Task<IActionResult> TestGRPCWorking()
+		{
+			try
+			{
+				var request = new GetUserByPhoneNumberRequest { PhoneNumber = "+447874158451" };
+				var channel = GrpcChannel.ForAddress("https://localhost:7098");
+				var client = new GetUser.GetUserClient(channel);
+				var reply = await client.GetUserByPhoneNumberAsync(request);
+				return Ok(reply.UserEntity);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "TestGRPCWorking failed");
 				return BadRequest($"Request failed: {ex.Message}");
 			}
 		}
