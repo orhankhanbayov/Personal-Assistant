@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssistantService", "PersonalAssistant\AssistantService.csproj", "{058AA860-C095-45CC-8611-FC3282A23DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssistantService", "AssistantService\AssistantService.csproj", "{058AA860-C095-45CC-8611-FC3282A23DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBService", "DBService\DBService.csproj", "{31E6644A-9844-40BF-83F6-A44C32A183AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseService", "DatabaseService\DatabaseService.csproj", "{31E6644A-9844-40BF-83F6-A44C32A183AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGPTService", "ChatGPTService\ChatGPTService.csproj", "{EAE7503C-FE12-41BF-A020-7A01B0841FB3}"
 EndProject

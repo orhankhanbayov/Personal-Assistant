@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option csharp_namespace = "DBService";
+
+package users;
+
+service Users {
+  rpc GetUserByPhoneNumber (GetUserByPhoneNumberRequest) returns (GetUserByPhoneNumberReply);
+  rpc GetUserByUserID (GetUserByUserIDRequest) returns (GetUserByUserIDReply);
+}
+
+message GetUserByPhoneNumberRequest {
+  string PhoneNumber = 1;
+}
+
+message GetUserByPhoneNumberReply {
+  UserMessage UserEntity = 1;
+}
+
+message GetUserByUserIDRequest {
+  int32 UserID = 1;
+}
+
+message GetUserByUserIDReply {
+    UserMessage UserEntity = 1;
+}
+
+message UserMessage {
+  int32 UserID = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  string Email = 4;
+  string PhoneNumber = 5;
+  string CreatedAt = 7;
+  string LastLoginAt = 8;
+  int32 error = 9;
+}
+
+
+

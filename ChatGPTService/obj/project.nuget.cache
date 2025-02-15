@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "wqcHCdiqKMk=",
+  "dgSpecHash": "5lGAhqYz0Xk=",
   "success": true,
   "projectFilePath": "/Users/orhan/Projects/PersonalAssistant/ChatGPTService/ChatGPTService.csproj",
   "expectedPackageFiles": [
+    "/Users/orhan/.nuget/packages/automapper/13.0.1/automapper.13.0.1.nupkg.sha512",
     "/Users/orhan/.nuget/packages/google.protobuf/3.27.0/google.protobuf.3.27.0.nupkg.sha512",
     "/Users/orhan/.nuget/packages/grpc.aspnetcore/2.64.0/grpc.aspnetcore.2.64.0.nupkg.sha512",
     "/Users/orhan/.nuget/packages/grpc.aspnetcore.server/2.64.0/grpc.aspnetcore.server.2.64.0.nupkg.sha512",
