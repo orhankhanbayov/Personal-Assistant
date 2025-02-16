@@ -31,13 +31,13 @@ namespace PersonalAssistant.Controllers
 					return BadRequest(ModelState);
 				}
 
-				VoiceResponse? response = await _assistantService.ProcessIncomingRequest(input);
+				string response = await _assistantService.ProcessIncomingRequest(input);
 				if (response == null)
 				{
 					_logger.LogError("Response is null");
 					return BadRequest("Failed to process the request.");
 				}
-				return Content(response.ToString(), "text/xml");
+				return Content(response, "text/xml");
 			}
 			catch (Exception ex)
 			{
@@ -57,13 +57,13 @@ namespace PersonalAssistant.Controllers
 					return BadRequest(ModelState);
 				}
 
-				VoiceResponse? response = await _assistantService.ProcessIncomingRequest(input);
+				string response = await _assistantService.ProcessIncomingRequest(input);
 				if (response == null)
 				{
 					_logger.LogError("Response is null");
 					return BadRequest("Failed to process the request.");
 				}
-				return Content(response.ToString(), "text/xml");
+				return Content(response, "text/xml");
 			}
 			catch (Exception ex)
 			{

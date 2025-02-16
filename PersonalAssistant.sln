@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGPTService", "ChatGPTSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheService", "CacheService\CacheService.csproj", "{60FB3E58-C64E-4709-A653-BBB6529E8741}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwilioService", "TwilioService\TwilioService.csproj", "{46266AB1-189F-4843-BACC-859538EE81B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchedulerService", "SchedulerService\SchedulerService.csproj", "{2A01C932-EC78-4D03-A8C3-84949AC37F4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{60FB3E58-C64E-4709-A653-BBB6529E8741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60FB3E58-C64E-4709-A653-BBB6529E8741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60FB3E58-C64E-4709-A653-BBB6529E8741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46266AB1-189F-4843-BACC-859538EE81B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46266AB1-189F-4843-BACC-859538EE81B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46266AB1-189F-4843-BACC-859538EE81B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46266AB1-189F-4843-BACC-859538EE81B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A01C932-EC78-4D03-A8C3-84949AC37F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A01C932-EC78-4D03-A8C3-84949AC37F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A01C932-EC78-4D03-A8C3-84949AC37F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A01C932-EC78-4D03-A8C3-84949AC37F4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,15 +26,6 @@ builder.Services.AddCors(options =>
 	);
 });
 
-// Twilio
-builder.Services.AddSingleton<ITwilioRestClient>(sp =>
-{
-	string? accountSid = builder.Configuration["Twilio:AccountSid"];
-	string? authToken = builder.Configuration["Twilio:AuthToken"];
-
-	return new TwilioRestClient(accountSid, authToken);
-});
-
 // --------------------------------------------------------------------
 
 // Hangfire services
@@ -51,7 +42,6 @@ builder.Services.AddLogging(builder => builder.AddConsole());
 
 builder.Services.AddHangfireServer();
 builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
-builder.Services.AddScoped<ITwilioService, TwilioService>();
 builder.Services.AddScoped<IAssistantService, AssistantServiceClass>();
 builder.Services.AddScoped<IBackgroundService, NotifyBackgroundService>();
 builder.Services.AddControllers();
@@ -59,7 +49,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MapperService));
-builder.Services.Configure<NgrokOptions>(builder.Configuration.GetSection("Ngrok"));
 
 builder.Services.AddGrpcClient<Users.UsersClient>(options =>
 {
@@ -92,6 +81,11 @@ builder.Services.AddGrpcClient<Chat.ChatClient>(options =>
 builder.Services.AddGrpcClient<Cache.CacheClient>(options =>
 {
 	options.Address = new Uri("https://localhost:7278");
+});
+
+builder.Services.AddGrpcClient<TwilioPhone.TwilioPhoneClient>(options =>
+{
+	options.Address = new Uri("https://localhost:7139");
 });
 
 var app = builder.Build();

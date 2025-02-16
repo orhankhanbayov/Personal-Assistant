@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Reflection;
+using System.Text.Json;
 using AutoMapper;
 using ChatGPTService;
 using ChatGPTService.Models;
@@ -60,10 +61,38 @@ public class ChatService : Chat.ChatBase
 				ChatTools.UpdateCalendarEventTool,
 				ChatTools.GetEventDetailsTool,
 			},
+			ResponseFormat = ChatResponseFormat.CreateJsonSchemaFormat(
+				jsonSchemaFormatName: "assistant_response_format",
+				jsonSchema: BinaryData.FromBytes(
+					"""
+			{
+				"type": "object",
+				"properties": {
+				"steps": {
+					"type": "array",
+					"items": {
+					"type": "object",
+					"properties": {
+						"explanation": { "type": "string" },
+						"output": { "type": "string" }
+					},
+					"required": ["explanation", "output"],
+					"additionalProperties": false
+					}
+				},
+				"final_answer": { "type": "string" }
+				},
+				"required": ["steps", "final_answer"],
+				"additionalProperties": false
+			}
+			"""u8.ToArray()
+				),
+				jsonSchemaIsStrict: true
+			),
 		};
 
 		ChatCompletion response = await _chatClient.CompleteChatAsync(messages, options);
-
+		// create seperate chat options without tool calls being passed in just for completions
 		var message = response.Content.FirstOrDefault()?.Text;
 		var toolCalls = response.ToolCalls;
 		if (message != null && response.ToolCalls == null)
@@ -75,12 +104,34 @@ public class ChatService : Chat.ChatBase
 		{
 			IReadOnlyList<ChatToolCall>? tools = response.ToolCalls;
 			List<string> messagesFromTools = await FunctionCaller(tools, user);
-			messagesFromTools.Add(
-				"Here is a list of the function calls made and the responses from each call. Generate an appropriate response based on the returns from the function calls, if an event is not found return a message to say the event is not found."
+			messagesFromTools.Insert(
+				0,
+				"Here is a list of the function calls made and the responses from each call. Generate an appropriate response based on the returns from the function calls, if an event is not found return a message to say the event is not found. Always return outputs in the structured data format always including a final answer even if it's just confirming what you have done or action that has been taken."
 			);
 			messages.AddRange(messagesFromTools.Select(e => new UserChatMessage(e) as ChatMessage));
 			ChatCompletion updatedResponse = await _chatClient.CompleteChatAsync(messages, options);
-			message = updatedResponse.Content.FirstOrDefault()?.Text;
+			// updatedResponse.Content[0].Text could be null so how to handle this
+			if (updatedResponse.Content[0]?.Text == null)
+			{
+				return new GetChatCompletionReply
+				{
+					Message = "Error: No content in updated response.",
+				};
+			}
+			using JsonDocument structuredJson = JsonDocument.Parse(updatedResponse.Content[0].Text);
+			JsonElement root = structuredJson.RootElement;
+			if (
+				root.TryGetProperty("final_answer", out JsonElement finalAnswerElement)
+				&& finalAnswerElement.ValueKind == JsonValueKind.String
+			)
+			{
+				message = finalAnswerElement.GetString();
+			}
+			else
+			{
+				message = "Error: final_answer not found or invalid.";
+			}
+
 			if (message == null)
 			{
 				message = "Error processing tool calls.";

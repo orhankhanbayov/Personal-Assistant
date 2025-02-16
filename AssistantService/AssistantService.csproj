@@ -31,5 +31,6 @@
     <Protobuf Include="Protos/notifications.proto" GrpcServices="Client" />
     <Protobuf Include="Protos/chat.proto" GrpcServices="Client" />
     <Protobuf Include="Protos/cache.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/twilio.proto" GrpcServices="Client" />
   </ItemGroup>
 </Project>

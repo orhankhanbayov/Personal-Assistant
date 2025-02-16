@@ -7,29 +7,30 @@ namespace AssistantService.Services;
 
 public class NotifyBackgroundService : IBackgroundService
 {
-	private readonly ITwilioService _twilioService;
 	private readonly Users.UsersClient _usersClient;
 	private readonly Notifications.NotificationsClient _notificationsClient;
 	private readonly Tasks.TasksClient _tasksClient;
 	private readonly Events.EventsClient _eventsClient;
 
+	private readonly TwilioPhone.TwilioPhoneClient _twilioClient;
+
 	private readonly IMapper _mapper;
 
 	public NotifyBackgroundService(
-		ITwilioService twilioService,
 		Users.UsersClient usersClient,
 		Notifications.NotificationsClient notificationsClient,
 		Tasks.TasksClient tasksClient,
 		Events.EventsClient eventsClient,
-		IMapper mapper
+		IMapper mapper,
+		TwilioPhone.TwilioPhoneClient twilioClient
 	)
 	{
-		_twilioService = twilioService;
 		_usersClient = usersClient;
 		_notificationsClient = notificationsClient;
 		_tasksClient = tasksClient;
 		_eventsClient = eventsClient;
 		_mapper = mapper;
+		_twilioClient = twilioClient;
 	}
 
 	public void processOutgoingRequests(IRecurringJobManager recurringJobManager)
@@ -81,9 +82,17 @@ public class NotifyBackgroundService : IBackgroundService
 
 				string message =
 					$"Hello {user?.FirstName}. You have a task titled '{task?.Title}' due by {task?.DueDate}. Description: {task?.Description}.";
-
 				Hangfire.BackgroundJob.Schedule(
-					() => _twilioService.Notify(message, ToPhoneNumber, FromPhoneNumber),
+					() =>
+						_twilioClient.Notify(
+							new NotifyRequest
+							{
+								Message = message,
+								ToPhoneNumber = ToPhoneNumber,
+								FromPhoneNumber = FromPhoneNumber,
+							},
+							new Grpc.Core.CallOptions()
+						),
 					nextNotification.SentAt
 				);
 				await _notificationsClient.MarkNotificationReadAsync(
@@ -108,7 +117,16 @@ public class NotifyBackgroundService : IBackgroundService
 					$"Hello {user?.FirstName}. You have an upcoming event titled '{Event?.Title}' scheduled from {Event?.StartTime} to {Event?.EndTime} at {Event?.Location}. Description: {Event?.Description}.";
 
 				Hangfire.BackgroundJob.Schedule(
-					() => _twilioService.Notify(message, ToPhoneNumber, FromPhoneNumber),
+					() =>
+						_twilioClient.Notify(
+							new NotifyRequest
+							{
+								Message = message,
+								ToPhoneNumber = ToPhoneNumber,
+								FromPhoneNumber = FromPhoneNumber,
+							},
+							new Grpc.Core.CallOptions()
+						),
 					nextNotification.SentAt
 				);
 				await _notificationsClient.MarkNotificationReadAsync(

@@ -43,7 +43,9 @@ message ClearCacheRequest {
   string callSid = 1;
 }
 
-message ClearCacheResponse {}
+message ClearCacheResponse {
+  string Message = 1;
+}
 
 message UserRecord {
   int32 UserID = 1;

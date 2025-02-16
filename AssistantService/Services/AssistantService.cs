@@ -11,36 +11,42 @@ namespace AssistantService.Services;
 
 public class AssistantServiceClass : IAssistantService
 {
-	private readonly ITwilioService _twilioService;
 	private readonly ILogger<AssistantServiceClass> _logger;
 	private readonly IMapper _mapper;
 	private readonly CallHistories.CallHistoriesClient _callHistoryClient;
 	private readonly Users.UsersClient _usersClient;
 	private readonly Chat.ChatClient _chatClient;
 	private readonly Cache.CacheClient _cacheClient;
+	private readonly TwilioPhone.TwilioPhoneClient _twilioClient;
 
 	public AssistantServiceClass(
-		ITwilioService twilioService,
 		ILogger<AssistantServiceClass> logger,
 		IMapper mapper,
 		CallHistories.CallHistoriesClient callHistoryClient,
 		Users.UsersClient usersClient,
 		Chat.ChatClient chatClient,
-		Cache.CacheClient cacheClient
+		Cache.CacheClient cacheClient,
+		TwilioPhone.TwilioPhoneClient twilioClient
 	)
 	{
-		_twilioService = twilioService;
 		_logger = logger;
 		_mapper = mapper;
 		_callHistoryClient = callHistoryClient;
 		_usersClient = usersClient;
 		_chatClient = chatClient;
 		_cacheClient = cacheClient;
+		_twilioClient = twilioClient;
 	}
 
-	public async Task<VoiceResponse> ProcessIncomingRequest(TwilioInputForm input)
+	public async Task<string> ProcessIncomingRequest(TwilioInputForm input)
 	{
 		var request = new GetUserByPhoneNumberRequest { PhoneNumber = input.From };
+		var errorResponse = _twilioClient.ErrorResponse(
+			new ErrorResponseRequest
+			{
+				Message = "An unexpected error occurred. Please try again later.",
+			}
+		);
 
 		var reply = await _usersClient.GetUserByPhoneNumberAsync(request);
 		User? user = _mapper.Map<User>(reply.UserEntity);
@@ -48,7 +54,8 @@ public class AssistantServiceClass : IAssistantService
 		if (user == null)
 		{
 			_logger.LogError("User not found");
-			return _twilioService.ErrorResponse();
+
+			return errorResponse.Response;
 		}
 		if (input.CallStatus == "ringing")
 		{
@@ -60,19 +67,20 @@ public class AssistantServiceClass : IAssistantService
 		}
 		else if (input.CallStatus == "completed")
 		{
-			return await ProccessCompletedCall(input, user);
+			await ProccessCompletedCall(input, user);
+			return "Call Complete.";
 		}
 		_logger.LogError("Invalid call status");
-		return _twilioService.ErrorResponse();
+		return errorResponse.Response;
 	}
 
-	public VoiceResponse ProccessInitialCall(TwilioInputForm input, User user)
+	public string ProccessInitialCall(TwilioInputForm input, User user)
 	{
 		DateTime currentDateTime = DateTime.Now;
 		string initialMessage =
-			$"You are an intelligent chatbot integrated with a call system. Your responses are based on real-time transcripts provided by Twilio's machine learning transcription service. Each segment of the conversation will be separated by '---'. You have access to advanced functions to enhance your responses and provide assistance as needed. Ensure clarity, accuracy, and natural interaction when responding to these transcripts. When responding, use the current date {currentDateTime} as a reference point. Always return a message especially with tool calls.";
+			$"You are an intelligent chatbot integrated with a call system. Your responses are based on real-time transcripts provided by Twilio's machine learning transcription service. Each segment of the conversation will be separated by '---'. You have access to advanced functions to enhance your responses and provide assistance as needed. Ensure clarity, accuracy, and natural interaction when responding to these transcripts. When responding, use the current date {currentDateTime} as a reference point. Always return outputs in the strucutred data format always including a final answer.";
 
-		var a = _cacheClient.CreateConversationHistory(
+		_cacheClient.CreateConversationHistory(
 			new CreateConversationHistoryRequest
 			{
 				CallSid = input.CallSid,
@@ -86,13 +94,17 @@ public class AssistantServiceClass : IAssistantService
 			}
 		);
 
-		VoiceResponse intialResponse = _twilioService.CallResponse(
-			"Welcome I am GPT your assistant, what would you like to do?"
+		var initialResponse = _twilioClient.CallResponse(
+			new CallResponseRequest
+			{
+				Message = "Welcome I am GPT your assistant, what would you like to do?",
+			}
 		);
-		return intialResponse;
+
+		return initialResponse.Response;
 	}
 
-	public async Task<VoiceResponse> ProcessInProgressRequests(TwilioInputForm input, User user)
+	public async Task<string> ProcessInProgressRequests(TwilioInputForm input, User user)
 	{
 		if (input.SpeechResult == null)
 		{
@@ -116,17 +128,27 @@ public class AssistantServiceClass : IAssistantService
 		if (convoHistory == null)
 		{
 			_logger.LogError("Error getting conversation history");
-			return _twilioService.ErrorResponse();
+			var errorResponse = _twilioClient.ErrorResponse(
+				new ErrorResponseRequest
+				{
+					Message = "An unexpected error occurred. Please try again later.",
+				}
+			);
+			return errorResponse.Response;
 		}
 
 		var gptResponse = await _chatClient.GetChatCompletionAsync(
 			new GetChatCompletionRequest { UserMessage = { convoHistory }, UserID = user.UserID }
 		);
-		VoiceResponse? response = _twilioService.CallResponse(gptResponse.Message);
-		return response;
+
+		var initialResponse = _twilioClient.CallResponse(
+			new CallResponseRequest { Message = gptResponse.Message }
+		);
+
+		return initialResponse.Response;
 	}
 
-	public async Task<VoiceResponse> ProccessCompletedCall(TwilioInputForm input, User user)
+	public async Task ProccessCompletedCall(TwilioInputForm input, User user)
 	{
 		var completeCall = _cacheClient.CompleteCall(
 			new CompleteCallRequest
@@ -145,7 +167,5 @@ public class AssistantServiceClass : IAssistantService
 		};
 
 		await _callHistoryClient.AddToCallHistoryAsync(request);
-
-		return new VoiceResponse();
 	}
 }
