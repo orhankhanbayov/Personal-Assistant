@@ -8,10 +8,8 @@ using AutoMapper;
 using Grpc.Net.Client;
 using Grpc.Net.ClientFactory;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OpenAI.Chat;
 using OpenTelemetry.Logs;
 using Twilio.Clients;
 
@@ -27,14 +25,6 @@ builder.Services.AddCors(options =>
 		}
 	);
 });
-
-// OpenAI
-builder.Services.AddSingleton<ChatClient>(sp =>
-{
-	return new ChatClient(model: "gpt-4o", apiKey: builder.Configuration["OpenAI:APIKey"]);
-});
-
-// --------------------------------------------------------------------
 
 // Twilio
 builder.Services.AddSingleton<ITwilioRestClient>(sp =>
@@ -64,7 +54,6 @@ builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<ITwilioService, TwilioService>();
-builder.Services.AddScoped<IChatGPTService, ChatGPTService>();
 builder.Services.AddScoped<IAssistantService, AssistantServiceClass>();
 builder.Services.AddScoped<IBackgroundService, NotifyBackgroundService>();
 builder.Services.AddControllers();
@@ -73,7 +62,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MapperService));
 builder.Services.Configure<NgrokOptions>(builder.Configuration.GetSection("Ngrok"));
-builder.Services.AddScoped<ChatToolsFunctions>();
 
 builder.Services.AddGrpcClient<Users.UsersClient>(options =>
 {
@@ -97,6 +85,11 @@ builder.Services.AddGrpcClient<Events.EventsClient>(options =>
 builder.Services.AddGrpcClient<CallHistories.CallHistoriesClient>(options =>
 {
 	options.Address = new Uri("https://localhost:7098");
+});
+
+builder.Services.AddGrpcClient<Chat.ChatClient>(options =>
+{
+	options.Address = new Uri("https://localhost:7116");
 });
 
 var app = builder.Build();

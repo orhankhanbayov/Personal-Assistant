@@ -1,4 +1,4 @@
-namespace AssistantService.Models;
+namespace ChatGPTService.Models;
 
 public class AddToCalendarArgs
 {

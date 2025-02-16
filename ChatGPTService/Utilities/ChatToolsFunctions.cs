@@ -1,11 +1,10 @@
 using System.Text.Json;
-using AssistantService.Models;
-using AssistantService.Services;
 using AutoMapper;
+using ChatGPTService.Models;
+using ChatGPTService.Services;
 using Grpc.Net.Client;
-using Microsoft.EntityFrameworkCore;
 
-namespace AssistantService.Utilities;
+namespace ChatGPTService.Utilities;
 
 public class ChatToolsFunctions
 {

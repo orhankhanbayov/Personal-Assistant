@@ -1,6 +1,6 @@
 using OpenAI.Chat;
 
-namespace AssistantService.Utilities;
+namespace ChatGPTService.Utilities;
 
 public static class ChatTools
 {

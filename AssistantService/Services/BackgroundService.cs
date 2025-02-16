@@ -8,9 +8,7 @@ namespace AssistantService.Services;
 
 public class NotifyBackgroundService : IBackgroundService
 {
-	private readonly IAssistantService _assistantService;
 	private readonly ITwilioService _twilioService;
-	private readonly ICacheService _cacheService;
 	private readonly Users.UsersClient _usersClient;
 	private readonly Notifications.NotificationsClient _notificationsClient;
 	private readonly Tasks.TasksClient _tasksClient;
@@ -19,9 +17,7 @@ public class NotifyBackgroundService : IBackgroundService
 	private readonly IMapper _mapper;
 
 	public NotifyBackgroundService(
-		IAssistantService assistantService,
 		ITwilioService twilioService,
-		ICacheService cacheService,
 		Users.UsersClient usersClient,
 		Notifications.NotificationsClient notificationsClient,
 		Tasks.TasksClient tasksClient,
@@ -29,9 +25,7 @@ public class NotifyBackgroundService : IBackgroundService
 		IMapper mapper
 	)
 	{
-		_assistantService = assistantService;
 		_twilioService = twilioService;
-		_cacheService = cacheService;
 		_usersClient = usersClient;
 		_notificationsClient = notificationsClient;
 		_tasksClient = tasksClient;

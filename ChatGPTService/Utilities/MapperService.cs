@@ -1,7 +1,8 @@
-using AssistantService.Models;
 using AutoMapper;
+using ChatGPTService.Models;
+using OpenAI.Chat;
 
-namespace AssistantService.Utilities;
+namespace ChatGPTService.Utilities;
 
 public class MapperService : Profile
 {

@@ -46,6 +46,8 @@
     <Protobuf Include="Protos/event.proto" GrpcServices="Client" />
     <Protobuf Include="Protos/task.proto" GrpcServices="Client" />
     <Protobuf Include="Protos/notifications.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/chat.proto" GrpcServices="Client" />
+
 </ItemGroup>
 
 </Project>
