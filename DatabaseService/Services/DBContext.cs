@@ -12,8 +12,6 @@ public class AppDbContext : DbContext
 	public DbSet<EventDetails> Events { get; set; }
 	public DbSet<TaskDetails> Tasks { get; set; }
 	public DbSet<Notification> Notifications { get; set; }
-	public DbSet<Category> Categories { get; set; }
-	public DbSet<AuditLog> AuditLogs { get; set; }
 	public DbSet<CallHistory> CallHistories { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -91,30 +89,6 @@ public class AppDbContext : DbContext
 				.WithMany(t => t.Notifications)
 				.HasForeignKey(n => n.TaskID)
 				.OnDelete(DeleteBehavior.Cascade);
-		});
-
-		// Categories
-		modelBuilder.Entity<Category>(entity =>
-		{
-			entity.HasKey(c => c.CategoryID);
-			entity.Property(c => c.Name).IsRequired().HasMaxLength(50);
-			entity
-				.HasOne(c => c.User)
-				.WithMany(u => u.Categories)
-				.HasForeignKey(c => c.UserID)
-				.OnDelete(DeleteBehavior.Cascade);
-		});
-
-		// AuditLog
-		modelBuilder.Entity<AuditLog>(entity =>
-		{
-			entity.HasKey(a => a.LogID);
-			entity.Property(a => a.Action).IsRequired().HasMaxLength(100);
-			entity.Property(a => a.TableName).IsRequired().HasMaxLength(50);
-			entity.Property(a => a.Timestamp).IsRequired();
-			entity.Property(a => a.Details).IsRequired();
-
-			entity.HasOne(a => a.User).WithMany(u => u.AuditLogs).HasForeignKey(al => al.UserID);
 		});
 
 		// CallHistory

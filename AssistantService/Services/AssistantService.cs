@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Reflection;
 using AssistantService.Models;
 using AssistantService.Utilities;
@@ -11,30 +12,30 @@ namespace AssistantService.Services;
 public class AssistantServiceClass : IAssistantService
 {
 	private readonly ITwilioService _twilioService;
-	private readonly ICacheService _cacheService;
 	private readonly ILogger<AssistantServiceClass> _logger;
 	private readonly IMapper _mapper;
 	private readonly CallHistories.CallHistoriesClient _callHistoryClient;
 	private readonly Users.UsersClient _usersClient;
 	private readonly Chat.ChatClient _chatClient;
+	private readonly Cache.CacheClient _cacheClient;
 
 	public AssistantServiceClass(
 		ITwilioService twilioService,
-		ICacheService cacheService,
 		ILogger<AssistantServiceClass> logger,
 		IMapper mapper,
 		CallHistories.CallHistoriesClient callHistoryClient,
 		Users.UsersClient usersClient,
-		Chat.ChatClient chatClient
+		Chat.ChatClient chatClient,
+		Cache.CacheClient cacheClient
 	)
 	{
 		_twilioService = twilioService;
-		_cacheService = cacheService;
 		_logger = logger;
 		_mapper = mapper;
 		_callHistoryClient = callHistoryClient;
 		_usersClient = usersClient;
 		_chatClient = chatClient;
+		_cacheClient = cacheClient;
 	}
 
 	public async Task<VoiceResponse> ProcessIncomingRequest(TwilioInputForm input)
@@ -71,15 +72,20 @@ public class AssistantServiceClass : IAssistantService
 		string initialMessage =
 			$"You are an intelligent chatbot integrated with a call system. Your responses are based on real-time transcripts provided by Twilio's machine learning transcription service. Each segment of the conversation will be separated by '---'. You have access to advanced functions to enhance your responses and provide assistance as needed. Ensure clarity, accuracy, and natural interaction when responding to these transcripts. When responding, use the current date {currentDateTime} as a reference point. Always return a message especially with tool calls.";
 
-		_cacheService.CreateConversationHistory(
-			input.CallSid,
-			input.CallStatus,
-			input.From,
-			input.To,
-			user.UserID,
-			initialMessage,
-			user
+		var a = _cacheClient.CreateConversationHistory(
+			new CreateConversationHistoryRequest
+			{
+				CallSid = input.CallSid,
+				CallStatus = input.CallStatus,
+				From = input.From,
+				To = input.To,
+				UserID = user.UserID,
+				InitialMessage = initialMessage,
+				User = _mapper.Map<UserRecord>(user),
+				StartTime = currentDateTime.ToString("o"),
+			}
 		);
+
 		VoiceResponse intialResponse = _twilioService.CallResponse(
 			"Welcome I am GPT your assistant, what would you like to do?"
 		);
@@ -92,9 +98,21 @@ public class AssistantServiceClass : IAssistantService
 		{
 			input.SpeechResult = "No speech detected";
 		}
-		_cacheService.UpdateConversationHistory(input.CallSid, input.SpeechResult);
 
-		List<string>? convoHistory = _cacheService.GetConvoHistory(input.CallSid);
+		_cacheClient.UpdateConversationHistory(
+			new UpdateConversationHistoryRequest
+			{
+				CallSid = input.CallSid,
+				Message = input.SpeechResult,
+			}
+		);
+
+		var getConvoHistory = _cacheClient.GetConvoHistory(
+			new GetConvoHistoryRequest { CallSid = input.CallSid }
+		);
+
+		List<string?>? convoHistory = getConvoHistory.ConvoHistory?.ToList();
+
 		if (convoHistory == null)
 		{
 			_logger.LogError("Error getting conversation history");
@@ -110,14 +128,16 @@ public class AssistantServiceClass : IAssistantService
 
 	public async Task<VoiceResponse> ProccessCompletedCall(TwilioInputForm input, User user)
 	{
-		_cacheService.CompleteCall(input.CallSid, input.CallStatus);
+		var completeCall = _cacheClient.CompleteCall(
+			new CompleteCallRequest
+			{
+				CallSid = input.CallSid,
+				CallStatus = input.CallStatus,
+				EndTime = DateTime.Now.ToString("o"),
+			}
+		);
 
-		CallHistory? callHistory = _cacheService.GetCallHistory(input.CallSid);
-		if (callHistory == null)
-		{
-			_logger.LogError("Error getting call history");
-			return _twilioService.ErrorResponse();
-		}
+		CallHistory? callHistory = _mapper.Map<CallHistory>(completeCall.CallHistoryEntity);
 
 		var request = new AddCallHistoryRequest
 		{
@@ -125,7 +145,7 @@ public class AssistantServiceClass : IAssistantService
 		};
 
 		await _callHistoryClient.AddToCallHistoryAsync(request);
-		_cacheService.ClearCache(input.CallSid);
+
 		return new VoiceResponse();
 	}
 }

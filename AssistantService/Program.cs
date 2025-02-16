@@ -51,8 +51,6 @@ builder.Services.AddLogging(builder => builder.AddConsole());
 
 builder.Services.AddHangfireServer();
 builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
-builder.Services.AddMemoryCache();
-builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<ITwilioService, TwilioService>();
 builder.Services.AddScoped<IAssistantService, AssistantServiceClass>();
 builder.Services.AddScoped<IBackgroundService, NotifyBackgroundService>();
@@ -90,6 +88,10 @@ builder.Services.AddGrpcClient<CallHistories.CallHistoriesClient>(options =>
 builder.Services.AddGrpcClient<Chat.ChatClient>(options =>
 {
 	options.Address = new Uri("https://localhost:7116");
+});
+builder.Services.AddGrpcClient<Cache.CacheClient>(options =>
+{
+	options.Address = new Uri("https://localhost:7278");
 });
 
 var app = builder.Build();

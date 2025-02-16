@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option csharp_namespace = "AssistantService";
+
+package cache;
+
+service Cache {
+    rpc CreateConversationHistory (CreateConversationHistoryRequest) returns (CreateConversationHistoryReply);
+    rpc ClearCache(ClearCacheRequest) returns (ClearCacheResponse);
+    rpc UpdateConversationHistory (UpdateConversationHistoryRequest) returns (UpdateConversationHistoryReply);
+    rpc CompleteCall (CompleteCallRequest) returns (CompleteCallReply);
+    rpc GetConvoHistory (GetConvoHistoryRequest) returns (GetConvoHistoryReply);
+}
+
+message CreateConversationHistoryRequest {
+  string CallSid = 1;
+	string CallStatus = 2;
+	string From = 3;
+	string To = 4;
+	int32 UserID = 5;
+	string InitialMessage = 6;
+  UserRecord User = 7;
+  string StartTime = 8;
+}
+
+message CreateConversationHistoryReply {
+    bool Success = 1;
+}
+
+message CallHistoryType {
+	optional int32 CallHistoryId = 1;
+	string CallSid = 2;
+	string From = 3;
+	string To = 4;
+	string StartTime = 5;
+	optional string EndTime = 6;
+	string CallStatus = 7;
+	int32 UserID = 8;
+	repeated string ConversationHistory = 9;
+} 
+
+message ClearCacheRequest {
+  string callSid = 1;
+}
+
+message ClearCacheResponse {}
+
+message UserRecord {
+  int32 UserID = 1;
+  string FirstName = 2;
+  string LastName = 3;
+  string Email = 4;
+  string PhoneNumber = 5;
+  string CreatedAt = 7;
+  string LastLoginAt = 8;
+  int32 error = 9;
+}
+message UpdateConversationHistoryRequest {
+  string CallSid = 1;
+  string Message = 2;
+}
+
+message UpdateConversationHistoryReply {
+  bool Success = 1;
+}
+
+message CompleteCallRequest {
+  string CallSid = 1;
+  string CallStatus = 2;
+  string EndTime = 3;
+}
+
+message CompleteCallReply {
+  CallHistoryType CallHistoryEntity = 1;
+}
+
+message GetConvoHistoryRequest {
+  string CallSid = 1;
+}
+
+message GetConvoHistoryReply {
+  repeated string ConvoHistory = 1;
+}

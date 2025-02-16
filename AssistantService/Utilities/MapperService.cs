@@ -21,6 +21,18 @@ public class MapperService : Profile
 							: DateTime.Parse(src.LastLoginAt)
 					)
 			);
+		CreateMap<User, UserRecord>()
+			.ForMember(
+				dest => dest.CreatedAt,
+				opt => opt.MapFrom(src => src.CreatedAt.ToString("o"))
+			)
+			.ForMember(
+				dest => dest.LastLoginAt,
+				opt =>
+					opt.MapFrom(src =>
+						src.LastLoginAt.HasValue ? src.LastLoginAt.Value.ToString("o") : null
+					)
+			);
 
 		CreateMap<CallHistory, CallHistoryRecord>()
 			.ForMember(
@@ -28,6 +40,14 @@ public class MapperService : Profile
 				opt => opt.MapFrom(src => src.StartTime.ToString("o"))
 			)
 			.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString("o")));
+
+		CreateMap<CallHistoryType, CallHistory>()
+			.ForMember(
+				dest => dest.StartTime,
+				opt => opt.MapFrom(src => DateTime.Parse(src.StartTime))
+			)
+			.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => DateTime.Parse(src.EndTime)))
+			.ForMember(dest => dest.CallHistoryId, opt => opt.Ignore());
 
 		CreateMap<EventDetails, EventDetailRecord>()
 			.ForMember(

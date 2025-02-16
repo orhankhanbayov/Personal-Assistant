@@ -1,0 +1,2 @@
+obj/Debug/net9.0/Protos/Cache.cs \
+obj/Debug/net9.0/Protos/CacheGrpc.cs: Protos/cache.proto

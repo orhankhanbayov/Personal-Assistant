@@ -1,4 +1,4 @@
-namespace DBService.Models;
+namespace CacheService.Models;
 
 public class User
 {
@@ -15,6 +15,8 @@ public class User
 	public ICollection<EventDetails>? Events { get; set; }
 	public ICollection<TaskDetails>? Tasks { get; set; }
 	public ICollection<Notification>? Notifications { get; set; }
+	public ICollection<Category>? Categories { get; set; }
+	public ICollection<AuditLog>? AuditLogs { get; set; }
 	public ICollection<CallHistory>? CallHistories { get; set; }
 }
 
@@ -65,6 +67,33 @@ public class Notification
 	public TaskDetails? TaskDetail { get; set; }
 }
 
+public class Category
+{
+	public int? CategoryID { get; set; }
+	public required int UserID { get; set; }
+	public required string Name { get; set; }
+	public required DateTime CreatedAt { get; set; }
+
+	public User? User { get; set; }
+}
+
+public class AuditLog
+{
+	public int? LogID { get; set; }
+
+	public string? Action { get; set; }
+
+	public string? TableName { get; set; }
+
+	public DateTime? Timestamp { get; set; }
+
+	public string? Details { get; set; }
+
+	public int? UserID { get; set; }
+
+	public User? User { get; set; }
+}
+
 public class CallHistory
 {
 	public int? CallHistoryId { get; set; }
@@ -76,6 +105,5 @@ public class CallHistory
 	public required string CallStatus { get; set; }
 	public required int UserID { get; set; }
 	public List<string> ConversationHistory { get; set; } = new List<string>();
-
 	public User? User { get; set; }
 }

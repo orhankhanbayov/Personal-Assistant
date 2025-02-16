@@ -81,6 +81,10 @@ public class ChatService : Chat.ChatBase
 			messages.AddRange(messagesFromTools.Select(e => new UserChatMessage(e) as ChatMessage));
 			ChatCompletion updatedResponse = await _chatClient.CompleteChatAsync(messages, options);
 			message = updatedResponse.Content.FirstOrDefault()?.Text;
+			if (message == null)
+			{
+				message = "Error processing tool calls.";
+			}
 		}
 
 		return new GetChatCompletionReply { Message = message };

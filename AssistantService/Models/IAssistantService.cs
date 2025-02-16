@@ -1,4 +1,3 @@
-using OpenAI.Chat;
 using Twilio.TwiML;
 
 namespace AssistantService.Models;

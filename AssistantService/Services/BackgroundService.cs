@@ -1,7 +1,6 @@
 using AssistantService.Models;
 using AutoMapper;
 using Grpc.Net.Client;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace AssistantService.Services;
