@@ -30,37 +30,8 @@ The **Personal Assistant** project is a .NET-based application that integrates *
 - **Hangfire** for background job scheduling
 - **Logging & Caching**
 
-## Required Configuration Files
 
-This project requires the following configuration files:
 
-### `appsettings.json`
-
-```json
-{
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*",
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost,1433;Initial Catalog=PersonalAssistantDatabase;User ID=sa;Password=;TrustServerCertificate=True;"
-  },
-  "Twilio": {
-    "AccountSid": "",
-    "AuthToken": ""
-  },
-  "OpenAI": {
-    "APIKey": ""
-  }
-}
-```
-
-## Twilio Integration
-
-The project has a single controller that needs to be pointed to from the **Twilio API** for handling SMS and call interactions. Ensure the Twilio webhook is configured to send requests to your deployed API endpoint.
 
 
 
