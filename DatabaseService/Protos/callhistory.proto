@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "DBService";
+
+package CallHistories;
+
+service CallHistories {
+  rpc AddToCallHistory (AddCallHistoryRequest) returns (AddCallHistoryReply);
+}
+
+message AddCallHistoryRequest {
+  CallHistoryRecord CallHistoryEntity = 1;
+}
+
+message CallHistoryRecord {
+    string CallSid = 1;
+    string From = 2;
+    string To = 3;
+    string StartTime = 4;
+    string EndTime = 5;
+    string CallStatus = 6;
+    int32 UserID = 7;
+    repeated string ConversationHistory = 8;
+}
+
+message AddCallHistoryReply {
+    int32 Success = 1;
+}

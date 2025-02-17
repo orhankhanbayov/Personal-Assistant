@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option csharp_namespace = "SchedulerService";
+
+package events;
+
+service Events {
+  rpc GetEventByID (GetEventByIDRequest) returns (GetEventByIDReply);
+  rpc AddEvent (AddEventRequest) returns (AddEventReply);
+  rpc ReadTodayCalendar (ReadTodayCalendarRequest) returns (ReadTodayCalendarReply);
+  rpc GetEventDetails (GetEventDetailsRequest) returns (GetEventDetailsReply);
+  rpc UpdateEvent (UpdateCalendarRequest) returns (UpdateEventReply);
+  rpc RemoveFromCalendar (RemoveFromCalendarRequest) returns (RemoveFromCalendarReply);
+}
+
+message GetEventByIDRequest {
+    int32 EventID = 1;
+}
+
+message GetEventByIDReply {
+    EventDetailRecord EventDetailsEntity = 1;
+}
+
+message EventDetailRecord {
+  optional int32 EventID = 1;
+  int32 UserID = 2;
+  string Title = 3;
+  string Description = 4;
+  string StartTime = 5;
+  string EndTime = 6;
+  string Location = 7;
+  bool IsRecurring = 8;
+  string RecurrencePattern = 9;
+  string CreatedAt = 10;
+}
+message AddEventRequest {
+  EventDetailRecord EventDetailsEntity = 1;
+}
+
+message AddEventReply {
+  int32 Success = 1;
+  int32 EventID = 2;
+}
+
+
+message ReadTodayCalendarRequest {
+  int32 UserID = 1;
+}
+
+message ReadTodayCalendarReply {
+  int32 Success = 1;
+  string Message = 2;
+}
+
+message GetEventDetailsRequest {
+  int32 UserID = 1;
+  string SearchColumn = 2;
+  string SearchTerm = 3;
+}
+
+message RemoveFromCalendarRequest {
+  string SearchColumn = 1;
+  string SearchTerm = 2;
+  int32 UserID = 3;
+}
+
+message RemoveFromCalendarReply {
+  int32 Success = 1;
+}
+
+message GetEventDetailsReply {
+  bool Success = 1;
+  string Message = 2;
+}
+
+message UpdateCalendarRequest {
+  string SearchColumn = 1;
+  int32 UserID = 2;
+  string Title = 3;
+  string StartTime = 4;
+  string EndTime = 5;
+  string Location = 6;
+  string Description = 7;
+  string SearchTerm = 8;
+  string Notes = 9;
+}
+
+message UpdateEventReply {
+  int32 Success = 1;
+}

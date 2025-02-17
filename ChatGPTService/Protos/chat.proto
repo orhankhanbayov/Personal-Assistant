@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "ChatGPTService";
+
+package Chat;
+
+service Chat {
+    rpc GetChatCompletion (GetChatCompletionRequest) returns (GetChatCompletionReply);
+}
+
+message GetChatCompletionRequest {
+    repeated string UserMessage = 1;
+    int32 UserID = 2;
+}
+
+message GetChatCompletionReply {
+    string Message = 1;
+}
+

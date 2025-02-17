@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option csharp_namespace = "SchedulerService";
+
+package tasks;
+
+service Tasks {
+    rpc GetTaskByTaskID (GetTaskByTaskIDRequest) returns (GetTaskByTaskIDReply);
+    rpc AddTask (AddTaskRequest) returns (AddTaskReply);
+
+}
+
+message GetTaskByTaskIDRequest {
+    int32 TaskID = 1;
+}
+
+message GetTaskByTaskIDReply {
+    TaskDetailRecord TaskDetailsEntity = 1;
+}
+
+
+message AddTaskRequest {
+  TaskDetailRecord TaskDetailsEntity = 1;
+}
+
+message AddTaskReply {
+  int32 Success = 1;
+}
+
+message TaskDetailRecord {
+  optional int32 TaskID = 1;
+  int32 UserId = 2;
+  string Title = 3;
+  string Description = 4;
+  string DueDate = 5;
+  bool IsCompleted = 6;
+  string Priority = 7;
+  string CreatedAt = 8;
+}

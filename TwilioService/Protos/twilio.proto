@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "TwilioService";
+
+package TwilioPhone;
+
+
+    service TwilioPhone {
+        rpc CallResponse (CallResponseRequest) returns (CallResponseReply);
+        rpc OutgoingCall (OutgoingCallRequest) returns (OutgoingCallReply);
+        rpc ErrorResponse (ErrorResponseRequest) returns (ErrorResponseReply);
+        rpc Notify (NotifyRequest) returns (NotifyReply);
+    }
+
+    message CallResponseRequest {
+        string message = 1;
+    }
+
+    message CallResponseReply {
+        string Response = 1;
+    }
+
+    message OutgoingCallRequest {
+        string Message = 1;
+		string ToPhoneNumber = 2;
+		string FromPhoneNumber = 3;
+    }
+
+    message OutgoingCallReply {
+        bool success = 1;
+    }
+
+    message ErrorResponseRequest {
+        string Message = 1;
+    }
+
+    message ErrorResponseReply {
+        string Response = 1;
+    }
+
+    message NotifyRequest {
+        string Message = 1;
+		string ToPhoneNumber = 2;
+		string FromPhoneNumber = 3;
+    }
+
+    message NotifyReply {
+        bool Success = 1;
+    }
+
+

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-SchedulerService-df0b6258-a3d5-4085-8cd4-979a9f8fd6ee</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.29.3" />
+    <PackageReference Include="Grpc" Version="2.46.6" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.67.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.69.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Hangfire" Version="1.8.17" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos/user.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/callhistory.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/event.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/task.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/notifications.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/chat.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/cache.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/twilio.proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>

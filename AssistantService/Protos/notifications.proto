@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option csharp_namespace = "AssistantService";
+
+package notifications;
+
+service Notifications {
+    rpc GetNextNotifications (GetNotificationListRequest) returns (GetNotificationListReply);
+    rpc AddNotification (AddNotificationsRequest) returns (AddNotificationReply);
+    rpc MarkNotificationRead (MarkNotificationReadRequest) returns (MarkNotificationReadReply);
+}
+
+message GetNotificationListRequest {
+}
+
+message GetNotificationListReply {
+    repeated NotificationRecord NotifiationList = 1;
+}
+
+message NotificationRecord {
+  optional int32 NotificationID = 1;
+  int32 UserID = 2;
+  optional int32 EventID = 3;
+  optional int32 TaskID = 4;
+  string Message = 5;
+  string SentAt = 6;
+  bool IsRead = 7;
+}
+
+message AddNotificationsRequest {
+  NotificationRecord NotificationEntity = 1;
+}
+
+message AddNotificationReply {
+  int32 Success = 1;
+}
+
+message MarkNotificationReadRequest {
+  int32 NotificationID = 1;
+}
+
+message MarkNotificationReadReply {
+  int32 Success = 1;
+}
