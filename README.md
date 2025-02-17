@@ -10,23 +10,25 @@ The **Personal Assistant** project is a .NET-based application that integrates *
 - **ChatGPT Access**: Provides AI-powered responses from ChatGPT through Twilio SMS or calls.
 - **Entity Framework & SQL Database**: Utilizes **Entity Framework** as the ORM and **Microsoft SQL Server** as the database.
 - **Logging & Caching**: Implements structured logging and caching for better performance.
-- **Timed Notifications**: Uses **Hangfire** for scheduling and managing background jobs.
-- **Service-Oriented Architecture**: Built with a modular service structure:
+- **Timed Notifications**: Uses **Hangfire and Worker Service** for scheduling and managing background jobs.
+- **Service-Oriented Architecture**: Built with a modular service structure with gRPC used for inter-service communication:
   - `AssistantService` for handling core assistant functionalities.
-  - `BackgroundService` for background processing tasks.
+  - `SchedulerService` for background processing tasks.
   - `CacheService` for managing caching operations.
   - `ChatGPTService` for handling AI interactions.
   - `TwilioService` for managing SMS and call communications.
+  - `DatabaseService` for handling storing and creating data. 
 
 ## Technologies Used
 
 - **.NET 9.0**
 - **ChatGPT API**
+- **gRPC**
 - **Twilio API**
 - **Entity Framework Core**
 - **Microsoft SQL Server**
 - **Hangfire** for background job scheduling
-- **Logging & Caching Mechanisms**
+- **Logging & Caching**
 
 ## Required Configuration Files
 
