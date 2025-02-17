@@ -27,7 +27,7 @@ The **Personal Assistant** project is a .NET-based application that integrates *
 - **Twilio API**
 - **Entity Framework Core**
 - **Microsoft SQL Server**
-- **Hangfire** for background job scheduling
+- **Hangfire** 
 - **Logging & Caching**
 
 
