@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("dotnet-SchedulerService-df0b6258-a3d5-4085-8cd4-979a9f8fd6ee")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SchedulerService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+248a4f4826d40e75939035dbab4d6bf764146a43")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c37177f4bf877f46c8a9825454da46747fd9f1e1")]
 [assembly: System.Reflection.AssemblyProductAttribute("SchedulerService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SchedulerService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

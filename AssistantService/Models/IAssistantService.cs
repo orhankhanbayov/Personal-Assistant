@@ -1,5 +1,3 @@
-using Twilio.TwiML;
-
 namespace AssistantService.Models;
 
 public interface IAssistantService

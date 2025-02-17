@@ -3,7 +3,6 @@ using AssistantService.Services;
 using AssistantService.Utilities;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
-using Twilio.TwiML;
 
 namespace PersonalAssistant.Controllers
 {

@@ -1,0 +1,2 @@
+obj/Debug/net9.0/Protos/Twilio.cs \
+obj/Debug/net9.0/Protos/TwilioGrpc.cs: Protos/twilio.proto

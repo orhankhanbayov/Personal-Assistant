@@ -1,4 +1,3 @@
-global using Hangfire;
 using System;
 using AssistantService;
 using AssistantService.Models;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Logs;
-using Twilio.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,24 +24,8 @@ builder.Services.AddCors(options =>
 	);
 });
 
-// --------------------------------------------------------------------
-
-// Hangfire services
-builder.Services.AddHangfire(configuration =>
-	configuration
-		.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-		.UseSimpleAssemblyNameTypeSerializer()
-		.UseRecommendedSerializerSettings()
-		.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
-
-// --------------------------------------------------------------------
-builder.Services.AddLogging(builder => builder.AddConsole());
-
-builder.Services.AddHangfireServer();
 builder.Logging.AddOpenTelemetry(logging => logging.AddOtlpExporter());
 builder.Services.AddScoped<IAssistantService, AssistantServiceClass>();
-builder.Services.AddScoped<IBackgroundService, NotifyBackgroundService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
@@ -91,16 +73,6 @@ builder.Services.AddGrpcClient<TwilioPhone.TwilioPhoneClient>(options =>
 var app = builder.Build();
 app.UseCors("AllowAll");
 app.UseRouting();
-app.UseHangfireDashboard();
-
-using (var scope = app.Services.CreateScope())
-{
-	var serviceProvider = scope.ServiceProvider;
-	var recurringJobs = serviceProvider.GetRequiredService<IRecurringJobManager>();
-	var backgroundService = serviceProvider.GetRequiredService<IBackgroundService>();
-
-	backgroundService.processOutgoingRequests(recurringJobs);
-}
 
 if (app.Environment.IsDevelopment())
 {

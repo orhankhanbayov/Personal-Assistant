@@ -5,7 +5,6 @@ using AssistantService.Models;
 using AssistantService.Utilities;
 using AutoMapper;
 using Grpc.Net.Client;
-using Twilio.TwiML;
 
 namespace AssistantService.Services;
 
