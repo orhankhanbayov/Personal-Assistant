@@ -32,61 +32,53 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MapperService));
 
+// builder.Services.AddAuthentication(); // Add this if you use app.UseAuthentication()
+builder.Services.AddAuthorization(); // This is required for app.UseAuthorization()
+
 builder.Services.AddGrpcClient<Users.UsersClient>(options =>
 {
-	options.Address = new Uri("https://localhost:7098");
-});
-
-builder.Services.AddGrpcClient<Notifications.NotificationsClient>(options =>
-{
-	options.Address = new Uri("https://localhost:7098");
-});
-builder.Services.AddGrpcClient<Tasks.TasksClient>(options =>
-{
-	options.Address = new Uri("https://localhost:7098");
-});
-
-builder.Services.AddGrpcClient<Events.EventsClient>(options =>
-{
-	options.Address = new Uri("https://localhost:7098");
+	options.Address = new Uri(builder.Configuration["GRPC:DatabaseClient"]);
 });
 
 builder.Services.AddGrpcClient<CallHistories.CallHistoriesClient>(options =>
 {
-	options.Address = new Uri("https://localhost:7098");
+	options.Address = new Uri(builder.Configuration["GRPC:DatabaseClient"]);
 });
 
 builder.Services.AddGrpcClient<Chat.ChatClient>(options =>
 {
-	options.Address = new Uri("https://localhost:7116");
+	options.Address = new Uri(builder.Configuration["GRPC:ChatGPTClient"]);
 });
+
 builder.Services.AddGrpcClient<Cache.CacheClient>(options =>
 {
-	options.Address = new Uri("https://localhost:7278");
+	options.Address = new Uri(builder.Configuration["GRPC:CacheClient"]);
 });
 
 builder.Services.AddGrpcClient<TwilioPhone.TwilioPhoneClient>(options =>
 {
-	options.Address = new Uri("https://localhost:7139");
+	options.Address = new Uri(builder.Configuration["GRPC:TwilioClient"]);
 });
 
 var app = builder.Build();
 app.UseCors("AllowAll");
-app.UseRouting();
 
-if (app.Environment.IsDevelopment())
-{
-	app.MapOpenApi();
-}
+// if (app.Environment.IsDevelopment())
+// {
+app.MapOpenApi();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// }
 
 app.UseHsts();
+app.UseHttpsRedirection();
 
+app.UseRouting();
+app.UseCors("AllowAll");
+
+//app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

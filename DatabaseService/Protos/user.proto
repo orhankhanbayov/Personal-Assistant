@@ -4,6 +4,7 @@ option csharp_namespace = "DBService";
 
 package users;
 
+
 service Users {
   rpc GetUserByPhoneNumber (GetUserByPhoneNumberRequest) returns (GetUserByPhoneNumberReply);
   rpc GetUserByUserID (GetUserByUserIDRequest) returns (GetUserByUserIDReply);

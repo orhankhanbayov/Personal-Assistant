@@ -27,9 +27,11 @@ public class GetUserService : Users.UsersBase
 		User? userByPhone = await _dbContext
 			.Users.Where(u => u.PhoneNumber == request.PhoneNumber)
 			.FirstOrDefaultAsync();
-
 		if (userByPhone == null)
 			throw new RpcException(new Status(StatusCode.NotFound, "User not found"));
+
+		userByPhone.LastLoginAt = DateTime.Now;
+		await _dbContext.SaveChangesAsync();
 
 		var userMessage = _mapper.Map<UserMessage>(userByPhone);
 		return new GetUserByPhoneNumberReply { UserEntity = userMessage };

@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\chat.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos/user.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos/callhistory.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos/event.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos/task.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos/notifications.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\user.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\callhistory.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\event.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\task.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\notifications.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +20,10 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.67.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.66.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="OpenAI" Version="2.1.0" />
   </ItemGroup>
 

@@ -165,7 +165,7 @@ public static class ChatTools
 
 	public static ChatTool CreateTaskTool = ChatTool.CreateFunctionTool(
 		nameof(ChatToolsFunctions.CreateTaskAsync),
-		"Add a task to the task list database",
+		"Add a task to the task list",
 		BinaryData.FromString(
 			"""
 			{

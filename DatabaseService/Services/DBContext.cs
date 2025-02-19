@@ -82,13 +82,13 @@ public class AppDbContext : DbContext
 				.HasOne(n => n.EventDetail)
 				.WithMany(e => e.Notifications)
 				.HasForeignKey(c => c.EventID)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.NoAction);
 
 			entity
 				.HasOne(n => n.TaskDetail)
 				.WithMany(t => t.Notifications)
 				.HasForeignKey(n => n.TaskID)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.NoAction);
 		});
 
 		// CallHistory

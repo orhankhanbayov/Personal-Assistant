@@ -83,7 +83,11 @@ public class ChatToolsFunctions
 			new ReadTodayCalendarRequest { UserID = data.user.UserID }
 		);
 
-		return new FunctionCallerReturn { Success = result.Success > 1, Message = result.Message };
+		if (result == null)
+		{
+			return new FunctionCallerReturn { Success = false, Message = "Error reading from calendar" };
+		}
+		return new FunctionCallerReturn { Success = true, Message = result.Message };
 	}
 
 	public async Task<FunctionCallerReturn> RemoveFromCalendarAsync(FunctionCallerArgs data)
