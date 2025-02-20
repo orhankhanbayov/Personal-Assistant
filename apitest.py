@@ -6,7 +6,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Base URL of the API
-base_url = "https://localhost:7048"
+base_url = "https://localhost:6443"
 
 # Generate a random CallSid to be used across all requests
 call_sid = str(uuid.uuid4())

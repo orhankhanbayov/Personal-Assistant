@@ -7,11 +7,31 @@ WORKDIR /src
 COPY ["TwilioService.csproj", "./"]
 RUN dotnet restore "TwilioService.csproj"
 COPY . .
-RUN dotnet publish "TwilioService.csproj" -c Release -o /src/publish
+RUN dotnet publish "TwilioService.csproj" -c Debug -o /src/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/publish .
-ENTRYPOINT ["dotnet", "TwilioService.dll"]
+
+RUN apt-get update && \
+    apt-get install -y openssh-server wget && \
+    mkdir /var/run/sshd && \
+    wget https://aka.ms/getvsdbgsh -O getvsdbg.sh && \
+    chmod +x getvsdbg.sh && \
+    ./getvsdbg.sh -v latest -l /vsdbg && \
+    rm getvsdbg.sh
+
+RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
+COPY id_rsa.pub /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/authorized_keys
+EXPOSE 22
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["dotnet", "TwilioService.dll"]
+
 
 

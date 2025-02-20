@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+
 # Path to the mounted certificate directory (adjust if needed)
 CERT_MOUNT_DIR="/https"
 TARGET_CERT_DIR="/usr/local/share/ca-certificates"
@@ -19,6 +20,9 @@ done
 
 # Update CA certificates
 update-ca-certificates
+
+service ssh start
+
 
 # Execute the CMD passed to the container (e.g., starting your application)
 exec "$@"

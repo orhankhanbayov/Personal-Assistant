@@ -20,6 +20,8 @@ done
 # Update CA certificates
 update-ca-certificates
 
+service ssh start
+
 # Execute the CMD passed to the container (e.g., starting your application)
 exec "$@"
 

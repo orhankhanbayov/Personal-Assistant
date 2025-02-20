@@ -1,6 +1,122 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
+        {
+            "name": "C#: Assistant Service Debug Remote",
+            "type": "coreclr",
+            "request": "attach",
+            // "processId": "", // or specify the process ID if known
+            "pipeTransport": {
+              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/AssistantService",
+              "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
+            "pipeArgs": [
+            "root@localhost",
+            "-p",
+            "6442",
+            "-T"            ],
+              "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
+            },
+            "sourceFileMap": {
+                "/src": "/Users/orhan/Projects/PersonalAssistant/AssistantService"
+            }
+        },
+        {
+            "name": "C#: Twilio Service Debug Remote",
+            "type": "coreclr",
+            "request": "attach",
+            // "processId": "", // or specify the process ID if known
+            "pipeTransport": {
+              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/TwilioService",
+              "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
+            "pipeArgs": [
+            "root@localhost",
+            "-p",
+            "2442",
+            "-T"            ],
+              "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
+            },
+            "sourceFileMap": {
+                "/src": "/Users/orhan/Projects/PersonalAssistant/TwilioService"
+            }
+        },
+        {
+            "name": "C#: Cache Service Debug Remote",
+            "type": "coreclr",
+            "request": "attach",
+            // "processId": "", // or specify the process ID if known
+            "pipeTransport": {
+              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/CacheService",
+              "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
+            "pipeArgs": [
+            "root@localhost",
+            "-p",
+            "5442",
+            "-T"            ],
+              "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
+            },
+            "sourceFileMap": {
+                "/src": "/Users/orhan/Projects/PersonalAssistant/CacheService"
+            }
+        },
+        {
+            "name": "C#: ChatGPT Service Debug Remote",
+            "type": "coreclr",
+            "request": "attach",
+            // "processId": "", // or specify the process ID if known
+            "pipeTransport": {
+              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/ChatGPTService",
+              "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
+            "pipeArgs": [
+            "root@localhost",
+            "-p",
+            "4432",
+            "-T"            ],
+              "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
+            },
+            "sourceFileMap": {
+                "/src": "/Users/orhan/Projects/PersonalAssistant/ChatGPTService"
+            }
+        },
+        {
+            "name": "C#: Database Service Debug Remote",
+            "type": "coreclr",
+            "request": "attach",
+            // "processId": "", // or specify the process ID if known
+            "pipeTransport": {
+              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/DatabaseService",
+              "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
+            "pipeArgs": [
+            "root@localhost",
+            "-p",
+            "1442",
+            "-T"            
+        ],
+              "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
+            },
+            "sourceFileMap": {
+                "/src": "/Users/orhan/Projects/PersonalAssistant/DatabaseService"
+            }
+        },
+        {
+            "name": "C#: Scheduler Service Debug Remote",
+            "type": "coreclr",
+            "request": "attach",
+            // "processId": "", // or specify the process ID if known
+            "pipeTransport": {
+              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/SchedulerService",
+              "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
+            "pipeArgs": [
+            "root@localhost",
+            "-p",
+            "3442",
+            "-T"            ],
+              "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
+            },
+            "sourceFileMap": {
+                "/src": "/Users/orhan/Projects/PersonalAssistant/SchedulerService"
+            }
+        },
         {
             "name": "C#: Twilio Service Debug",
             "type": "coreclr",

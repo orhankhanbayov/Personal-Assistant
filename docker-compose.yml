@@ -27,6 +27,7 @@ services:
     image: personalassistant-databaseservice
     ports:
       - "1443:443"
+      - "1442:22"
     networks:
       grpc_network:
         ipv4_address: 10.18.0.8
@@ -46,6 +47,7 @@ services:
     image: personalassistant-twilioservice
     ports:
       - "2443:443"
+      - "2442:22"
     networks:
       grpc_network:
         ipv4_address: 10.18.0.3
@@ -65,6 +67,7 @@ services:
     image: personalassistant-schedulerservice
     ports:
       - "3443:443"
+      - "3442:22"
     networks:
       grpc_network:
         ipv4_address: 10.18.0.4
@@ -85,6 +88,7 @@ services:
     image: personalassistant-chatgptservice
     ports:
       - "4443:443"
+      - "4442:22"
     networks:
       grpc_network:
         ipv4_address: 10.18.0.5
@@ -105,6 +109,7 @@ services:
     image: personalassistant-cacheservice
     ports:
       - "5443:443"
+      - "5442:22"
     networks:
       grpc_network:
         ipv4_address: 10.18.0.6
@@ -126,6 +131,7 @@ services:
 
     ports:
       - "6443:443"
+      - "6442:22"
     networks:
       grpc_network:
         ipv4_address: 10.18.0.7
