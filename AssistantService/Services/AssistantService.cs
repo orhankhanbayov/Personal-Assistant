@@ -1,11 +1,5 @@
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
-using AssistantService;
 using AssistantService.Models;
-using AssistantService.Utilities;
 using AutoMapper;
-using Grpc.Net.Client;
 
 namespace AssistantService.Services;
 
@@ -40,7 +34,6 @@ public class AssistantServiceClass : IAssistantService
 
 	public async Task<string> ProcessIncomingRequest(TwilioInputForm input)
 	{
-		var request = new GetUserByPhoneNumberRequest { PhoneNumber = input.From };
 		var errorResponse = _twilioClient.ErrorResponse(
 			new ErrorResponseRequest
 			{
@@ -48,8 +41,7 @@ public class AssistantServiceClass : IAssistantService
 			}
 		);
 
-		var reply = await _usersClient.GetUserByPhoneNumberAsync(request);
-		User? user = _mapper.Map<User>(reply.UserEntity);
+		User? user = await GetUser(input.From);
 
 		if (user == null)
 		{
@@ -167,5 +159,15 @@ public class AssistantServiceClass : IAssistantService
 		};
 
 		await _callHistoryClient.AddToCallHistoryAsync(request);
+	}
+
+	private async Task<User> GetUser(string PhoneNumber)
+	{
+		var request = new GetUserByPhoneNumberRequest { PhoneNumber = PhoneNumber };
+
+		var reply = await _usersClient.GetUserByPhoneNumberAsync(request);
+		User? user = _mapper.Map<User>(reply.UserEntity);
+
+		return user;
 	}
 }

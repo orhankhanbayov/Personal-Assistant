@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+namespace AssistantService.Models;
 public class TwilioInputForm
 {
 	[Required(ErrorMessage = "CallSid is required.")]

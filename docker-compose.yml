@@ -15,7 +15,7 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - /Users/orhan/docker/mssql/data:/var/opt/mssql
+      - /Users/orhankhanbayov/docker/mssql/data:/var/opt/mssql
     networks:
       grpc_network:
         ipv4_address: 10.18.0.2

@@ -38,7 +38,6 @@ callback_payload_in_progress = {
 
 }
 
-
 if initial_response.status_code == 200:
     callback_response_in_progress = send_request("/IncomingCalls/Callback", callback_payload_in_progress)
 

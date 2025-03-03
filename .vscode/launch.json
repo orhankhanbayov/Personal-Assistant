@@ -8,7 +8,7 @@
             "request": "attach",
             // "processId": "", // or specify the process ID if known
             "pipeTransport": {
-              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/AssistantService",
+              "pipeCwd": "/Users/orhankhanbayov/Projects/PersonalAssistant/AssistantService",
               "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
             "pipeArgs": [
             "root@localhost",
@@ -18,7 +18,7 @@
               "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
             },
             "sourceFileMap": {
-                "/src": "/Users/orhan/Projects/PersonalAssistant/AssistantService"
+                "/src": "/Users/orhankhanbayov/Projects/PersonalAssistant/AssistantService"
             }
         },
         {
@@ -27,7 +27,7 @@
             "request": "attach",
             // "processId": "", // or specify the process ID if known
             "pipeTransport": {
-              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/TwilioService",
+              "pipeCwd": "/Users/orhankhanbayov/Projects/PersonalAssistant/TwilioService",
               "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
             "pipeArgs": [
             "root@localhost",
@@ -37,7 +37,7 @@
               "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
             },
             "sourceFileMap": {
-                "/src": "/Users/orhan/Projects/PersonalAssistant/TwilioService"
+                "/src": "/Users/orhankhanbayov/Projects/PersonalAssistant/TwilioService"
             }
         },
         {
@@ -46,7 +46,7 @@
             "request": "attach",
             // "processId": "", // or specify the process ID if known
             "pipeTransport": {
-              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/CacheService",
+              "pipeCwd": "/Users/orhankhanbayov/Projects/PersonalAssistant/CacheService",
               "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
             "pipeArgs": [
             "root@localhost",
@@ -56,7 +56,7 @@
               "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
             },
             "sourceFileMap": {
-                "/src": "/Users/orhan/Projects/PersonalAssistant/CacheService"
+                "/src": "/Users/orhankhanbayov/Projects/PersonalAssistant/CacheService"
             }
         },
         {
@@ -65,7 +65,7 @@
             "request": "attach",
             // "processId": "", // or specify the process ID if known
             "pipeTransport": {
-              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/ChatGPTService",
+              "pipeCwd": "/Users/orhankhanbayov/Projects/PersonalAssistant/ChatGPTService",
               "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
             "pipeArgs": [
             "root@localhost",
@@ -75,7 +75,7 @@
               "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
             },
             "sourceFileMap": {
-                "/src": "/Users/orhan/Projects/PersonalAssistant/ChatGPTService"
+                "/src": "/Users/orhankhanbayov/Projects/PersonalAssistant/ChatGPTService"
             }
         },
         {
@@ -84,7 +84,7 @@
             "request": "attach",
             // "processId": "", // or specify the process ID if known
             "pipeTransport": {
-              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/DatabaseService",
+              "pipeCwd": "/Users/orhankhanbayov/Projects/PersonalAssistant/DatabaseService",
               "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
             "pipeArgs": [
             "root@localhost",
@@ -95,7 +95,7 @@
               "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
             },
             "sourceFileMap": {
-                "/src": "/Users/orhan/Projects/PersonalAssistant/DatabaseService"
+                "/src": "/Users/orhankhanbayov/Projects/PersonalAssistant/DatabaseService"
             }
         },
         {
@@ -104,7 +104,7 @@
             "request": "attach",
             // "processId": "", // or specify the process ID if known
             "pipeTransport": {
-              "pipeCwd": "/Users/orhan/Projects/PersonalAssistant/SchedulerService",
+              "pipeCwd": "/Users/orhankhanbayov/Projects/PersonalAssistant/SchedulerService",
               "pipeProgram": "/usr/bin/ssh",  // use the full path to your SSH executable
             "pipeArgs": [
             "root@localhost",
@@ -114,7 +114,7 @@
               "debuggerPath": "/vsdbg/vsdbg"    // update with the correct vsdbg path in your container
             },
             "sourceFileMap": {
-                "/src": "/Users/orhan/Projects/PersonalAssistant/SchedulerService"
+                "/src": "/Users/orhankhanbayov/Projects/PersonalAssistant/SchedulerService"
             }
         },
         {

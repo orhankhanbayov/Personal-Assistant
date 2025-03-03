@@ -1,13 +1,4 @@
 global using Hangfire;
-using System;
-using AutoMapper;
-using Grpc.Net.Client;
-using Grpc.Net.ClientFactory;
-using Hangfire;
-using Hangfire.SqlServer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SchedulerService;
 using SchedulerService.Utilities;
 
@@ -20,7 +11,7 @@ GlobalConfiguration.Configuration.UseSqlServerStorage(
 
 builder.Services.AddHangfire(configuration =>
 	configuration
-		.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+		// .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
 		.UseSimpleAssemblyNameTypeSerializer()
 		.UseRecommendedSerializerSettings()
 );
@@ -30,29 +21,41 @@ builder.Services.AddLogging(builder => builder.AddConsole());
 builder.Services.AddHangfireServer();
 builder.Services.AddAutoMapper(typeof(MapperService));
 
+var grpcDatabaseService = builder.Configuration["GRPC:DatabaseService"];
+var grpcTwilioService = builder.Configuration["GRPC:TwilioService"];
+
+if (string.IsNullOrEmpty(grpcDatabaseService) || string.IsNullOrEmpty
+	(grpcTwilioService))
+{
+	var missingConfigs = new List<string>();
+	if (string.IsNullOrEmpty(grpcDatabaseService)) missingConfigs.Add("GRPC:DatabaseClient");
+	if (string.IsNullOrEmpty(grpcTwilioService)) missingConfigs.Add("GRPC:TwilioClient");
+
+	throw new Exception($"Configuration is missing or null for: {string.Join(", ", missingConfigs)}. Exiting application.");
+}
+
 builder.Services.AddGrpcClient<Users.UsersClient>(options =>
 {
-	// options.Address = new Uri(builder.Configuration["GRPC:DatabaseClient"]);
-	options.Address = new Uri("https://DatabaseService");
+	options.Address = new Uri(grpcDatabaseService);
 });
 
 builder.Services.AddGrpcClient<Notifications.NotificationsClient>(options =>
 {
-	options.Address = new Uri("https://DatabaseService");
+	options.Address = new Uri(grpcDatabaseService);
 });
 builder.Services.AddGrpcClient<Tasks.TasksClient>(options =>
 {
-	options.Address = new Uri("https://DatabaseService");
+	options.Address = new Uri(grpcDatabaseService);
 });
 
 builder.Services.AddGrpcClient<Events.EventsClient>(options =>
 {
-	options.Address = new Uri("https://DatabaseService");
+	options.Address = new Uri(grpcDatabaseService);
 });
 
 builder.Services.AddGrpcClient<TwilioPhone.TwilioPhoneClient>(options =>
 {
-	options.Address = new Uri("https://TwilioService");
+	options.Address = new Uri(grpcTwilioService);
 });
 var host = builder.Build();
 

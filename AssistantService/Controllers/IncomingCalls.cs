@@ -1,10 +1,6 @@
-using AssistantService.Models;
-using AssistantService.Services;
-using AssistantService.Utilities;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
-
-namespace PersonalAssistant.Controllers
+using AssistantService.Models;
+namespace AssistantService.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
