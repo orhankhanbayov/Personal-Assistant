@@ -2,15 +2,10 @@ namespace DBService.Models;
 
 public class User
 {
-	public int UserID { get; set; }
-	public required string FirstName { get; set; }
-	public required string LastName { get; set; }
-	public required string Email { get; set; }
-	public required string PhoneNumber { get; set; }
-	public string? PasswordHash { get; set; }
-	public required DateTime CreatedAt { get; set; }
+	public int? UserID { get; set; }
+	public required string UUID { get; set; }
+	public DateTime CreatedAt { get; set; } = DateTime.Now;
 	public DateTime? LastLoginAt { get; set; }
-
 	public ICollection<EventDetails>? Events { get; set; }
 	public ICollection<TaskDetails>? Tasks { get; set; }
 	public ICollection<Notification>? Notifications { get; set; }

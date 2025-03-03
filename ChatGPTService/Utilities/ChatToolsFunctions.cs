@@ -1,8 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using ChatGPTService.Models;
-using ChatGPTService.Services;
-using Grpc.Net.Client;
+
 
 namespace ChatGPTService.Utilities;
 

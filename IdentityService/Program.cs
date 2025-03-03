@@ -23,7 +23,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 0;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.AllowedForNewUsers = false;
     options.User.AllowedUserNameCharacters = "0123456789";
     options.User.RequireUniqueEmail = true;
 });
@@ -38,6 +38,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.MapIdentityApi<IdentityUserExtended>();
 
 app.UseAuthentication();
 app.UseAuthorization();

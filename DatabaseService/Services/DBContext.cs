@@ -22,17 +22,11 @@ public class AppDbContext : DbContext
 		modelBuilder.Entity<User>(entity =>
 		{
 			entity.HasKey(u => u.UserID);
-			entity.Property(u => u.FirstName).IsRequired().HasMaxLength(50);
-			entity.Property(u => u.LastName).IsRequired().HasMaxLength(50);
-			entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
-			entity.Property(u => u.PasswordHash).IsRequired().HasMaxLength(255);
-			entity.Property(u => u.PhoneNumber).IsRequired().HasMaxLength(15);
 			entity
 				.HasMany(u => u.CallHistories)
 				.WithOne(c => c.User)
 				.HasForeignKey(c => c.UserID)
 				.OnDelete(DeleteBehavior.NoAction);
-			entity.HasIndex(u => u.Email).IsUnique();
 		});
 
 		// Events

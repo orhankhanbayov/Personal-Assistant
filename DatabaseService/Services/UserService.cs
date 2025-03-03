@@ -24,9 +24,10 @@ public class GetUserService : Users.UsersBase
 		ServerCallContext context
 	)
 	{
-		User? userByPhone = await _dbContext
-			.Users.Where(u => u.PhoneNumber == request.PhoneNumber)
-			.FirstOrDefaultAsync();
+		// User? userByPhone = await _dbContext
+		// 	.Users.Where(u => u.PhoneNumber == request.PhoneNumber)
+		// 	.FirstOrDefaultAsync();
+		User? userByPhone = null;
 		if (userByPhone == null)
 			throw new RpcException(new Status(StatusCode.NotFound, "User not found"));
 
@@ -37,13 +38,13 @@ public class GetUserService : Users.UsersBase
 		return new GetUserByPhoneNumberReply { UserEntity = userMessage };
 	}
 
-	public override async Task<GetUserByUserIDReply> GetUserByUserID(
+	public override async Task<GetUserByUserIDReply> GetUserByUUID(
 		GetUserByUserIDRequest request,
 		ServerCallContext context
 	)
 	{
 		User? userByID = await _dbContext
-			.Users.Where(u => u.UserID == request.UserID)
+			.Users.Where(u => u.UUID == request.UUID)
 			.FirstOrDefaultAsync();
 
 		if (userByID == null)
@@ -51,5 +52,20 @@ public class GetUserService : Users.UsersBase
 
 		var userMessage = _mapper.Map<UserMessage>(userByID);
 		return new GetUserByUserIDReply { UserEntity = userMessage };
+	}
+
+	public override async Task<CreateUserReply> CreateUser(
+		CreateUserRequest request,
+		ServerCallContext context
+	)
+	{
+		User user = new()
+		{
+			UUID = request.UUID
+		};
+		await _dbContext.Users.AddAsync(user);
+		await _dbContext.SaveChangesAsync();
+
+		return new CreateUserReply { Success = 1 };
 	}
 }

@@ -14,7 +14,9 @@ namespace AssistantService.Controllers
 			_assistantService = assistantService;
 			_logger = logger;
 		}
-
+		// check if user is registerd or not
+		// if not call the registration endpoint
+		// else call processIncomingRequest
 		[HttpPost("InitialCall")]
 		public async Task<IActionResult> InitialCall([FromForm] TwilioInputForm input)
 		{

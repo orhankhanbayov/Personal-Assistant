@@ -7,7 +7,8 @@ package users;
 
 service Users {
   rpc GetUserByPhoneNumber (GetUserByPhoneNumberRequest) returns (GetUserByPhoneNumberReply);
-  rpc GetUserByUserID (GetUserByUserIDRequest) returns (GetUserByUserIDReply);
+  rpc GetUserByUUID (GetUserByUserIDRequest) returns (GetUserByUserIDReply);
+  rpc CreateUser (CreateUserRequest) returns (CreateUserReply);
 }
 
 message GetUserByPhoneNumberRequest {
@@ -19,7 +20,7 @@ message GetUserByPhoneNumberReply {
 }
 
 message GetUserByUserIDRequest {
-  int32 UserID = 1;
+  string UUID = 1;
 }
 
 message GetUserByUserIDReply {
@@ -37,5 +38,10 @@ message UserMessage {
   int32 error = 9;
 }
 
+message CreateUserRequest {
+  string UUID = 1;
+}
 
-
+message CreateUserReply {
+  int32 success = 1;
+}
