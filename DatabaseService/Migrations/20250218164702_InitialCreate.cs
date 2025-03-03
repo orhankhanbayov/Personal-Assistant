@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DBService.Migrations
+namespace DatabaseService.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -31,28 +31,6 @@ namespace DBService.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuditLogs",
-                columns: table => new
-                {
-                    LogID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Action = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TableName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AuditLogs", x => x.LogID);
-                    table.ForeignKey(
-                        name: "FK_AuditLogs_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CallHistories",
                 columns: table => new
                 {
@@ -75,27 +53,6 @@ namespace DBService.Migrations
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryID);
-                    table.ForeignKey(
-                        name: "FK_Categories_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,18 +141,8 @@ namespace DBService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditLogs_UserID",
-                table: "AuditLogs",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CallHistories_UserID",
                 table: "CallHistories",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_UserID",
-                table: "Categories",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -234,13 +181,7 @@ namespace DBService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AuditLogs");
-
-            migrationBuilder.DropTable(
                 name: "CallHistories");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Notifications");

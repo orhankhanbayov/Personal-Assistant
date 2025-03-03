@@ -1,10 +1,5 @@
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
 using AssistantService.Models;
-using AssistantService.Utilities;
 using AutoMapper;
-using Grpc.Net.Client;
 
 namespace AssistantService.Services;
 
@@ -39,7 +34,6 @@ public class AssistantServiceClass : IAssistantService
 
 	public async Task<string> ProcessIncomingRequest(TwilioInputForm input)
 	{
-		var request = new GetUserByPhoneNumberRequest { PhoneNumber = input.From };
 		var errorResponse = _twilioClient.ErrorResponse(
 			new ErrorResponseRequest
 			{
@@ -47,8 +41,7 @@ public class AssistantServiceClass : IAssistantService
 			}
 		);
 
-		var reply = await _usersClient.GetUserByPhoneNumberAsync(request);
-		User? user = _mapper.Map<User>(reply.UserEntity);
+		User? user = await GetUser(input.From);
 
 		if (user == null)
 		{
@@ -77,7 +70,7 @@ public class AssistantServiceClass : IAssistantService
 	{
 		DateTime currentDateTime = DateTime.Now;
 		string initialMessage =
-			$"You are an intelligent chatbot integrated with a call system. Your responses are based on real-time transcripts provided by Twilio's machine learning transcription service. Each segment of the conversation will be separated by '---'. You have access to advanced functions to enhance your responses and provide assistance as needed. Ensure clarity, accuracy, and natural interaction when responding to these transcripts. When responding, use the current date {currentDateTime} as a reference point. Always return outputs in the strucutred data format always including a final answer.";
+			$"You are an intelligent chatbot integrated with a call system. You have functions that you are able to call, you also manage an event calendar and a task list. Your responses are based on real-time transcripts provided by Twilio's machine learning transcription service. Each segment of the conversation will be separated by '---'. You have access to advanced functions to enhance your responses and provide assistance as needed. Ensure clarity, accuracy, and natural interaction when responding to these transcripts. When responding, use the current date {currentDateTime} as a reference point. Always return outputs in the strucutred data format always including a final answer. Current functions available: AddToCalendarAsync to add events to the calendar, ReadFromCalendarTodayAsync to read from the calendar for today, RemoveFromCalendarAsync to remove an event from the calendar, GetEventDetailsAsync To get a specific event, UpdateCalendarEventAsync to update a specific event and CreateTaskAsync is to create a to reminder task seperate from an event.";
 
 		_cacheClient.CreateConversationHistory(
 			new CreateConversationHistoryRequest
@@ -166,5 +159,15 @@ public class AssistantServiceClass : IAssistantService
 		};
 
 		await _callHistoryClient.AddToCallHistoryAsync(request);
+	}
+
+	private async Task<User> GetUser(string PhoneNumber)
+	{
+		var request = new GetUserByPhoneNumberRequest { PhoneNumber = PhoneNumber };
+
+		var reply = await _usersClient.GetUserByPhoneNumberAsync(request);
+		User? user = _mapper.Map<User>(reply.UserEntity);
+
+		return user;
 	}
 }

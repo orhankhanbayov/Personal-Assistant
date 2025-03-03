@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DBService.Migrations
+namespace DatabaseService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -21,41 +21,6 @@ namespace DBService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DBService.Models.AuditLog", b =>
-                {
-                    b.Property<int>("LogID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LogID"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("LogID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("AuditLogs");
-                });
 
             modelBuilder.Entity("DBService.Models.CallHistory", b =>
                 {
@@ -103,32 +68,6 @@ namespace DBService.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("CallHistories");
-                });
-
-            modelBuilder.Entity("DBService.Models.Category", b =>
-                {
-                    b.Property<int>("CategoryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("DBService.Models.EventDetails", b =>
@@ -304,32 +243,12 @@ namespace DBService.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DBService.Models.AuditLog", b =>
-                {
-                    b.HasOne("DBService.Models.User", "User")
-                        .WithMany("AuditLogs")
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DBService.Models.CallHistory", b =>
                 {
                     b.HasOne("DBService.Models.User", "User")
                         .WithMany("CallHistories")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DBService.Models.Category", b =>
-                {
-                    b.HasOne("DBService.Models.User", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -393,11 +312,7 @@ namespace DBService.Migrations
 
             modelBuilder.Entity("DBService.Models.User", b =>
                 {
-                    b.Navigation("AuditLogs");
-
                     b.Navigation("CallHistories");
-
-                    b.Navigation("Categories");
 
                     b.Navigation("Events");
 

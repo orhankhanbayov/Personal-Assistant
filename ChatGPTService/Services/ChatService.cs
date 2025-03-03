@@ -111,7 +111,7 @@ public class ChatService : Chat.ChatBase
 			messages.AddRange(messagesFromTools.Select(e => new UserChatMessage(e) as ChatMessage));
 			ChatCompletion updatedResponse = await _chatClient.CompleteChatAsync(messages, options);
 			// updatedResponse.Content[0].Text could be null so how to handle this
-			if (updatedResponse.Content[0]?.Text == null)
+			if (updatedResponse.Content.Count == 0)
 			{
 				return new GetChatCompletionReply
 				{

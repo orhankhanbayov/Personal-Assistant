@@ -1,0 +1,149 @@
+networks:
+  grpc_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.18.0.0/24
+          gateway: 10.18.0.1
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "MyStr0ngP@ss!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - /Users/orhankhanbayov/docker/mssql/data:/var/opt/mssql
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.2
+
+  DatabaseService:
+    build:
+      context: ./DatabaseService # path to your service folder
+      dockerfile: Dockerfile
+    image: personalassistant-databaseservice
+    ports:
+      - "1443:443"
+      - "1442:22"
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.8
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_HTTP_PORTS=
+      # - ASPNETCORE_HTTPS_PORTS=443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=assistantservice
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AssistantService.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  TwilioService:
+    build:
+      context: ./TwilioService # path to your service folder
+      dockerfile: Dockerfile
+    image: personalassistant-twilioservice
+    ports:
+      - "2443:443"
+      - "2442:22"
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.3
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=
+      - ASPNETCORE_HTTPS_PORTS=443
+      # - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=assistantservice
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AssistantService.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  SchedulerService:
+    build:
+      context: ./SchedulerService # path to your service folder
+      dockerfile: Dockerfile
+    image: personalassistant-schedulerservice
+    ports:
+      - "3443:443"
+      - "3442:22"
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.4
+
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=
+      - ASPNETCORE_HTTPS_PORTS=443
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=assistantservice
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AssistantService.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  ChatGPTService:
+    build:
+      context: ./ChatGPTService # path to your service folder
+      dockerfile: Dockerfile
+    image: personalassistant-chatgptservice
+    ports:
+      - "4443:443"
+      - "4442:22"
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.5
+
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=
+      - ASPNETCORE_HTTPS_PORTS=443
+      # - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=assistantservice
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AssistantService.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  CacheService:
+    build:
+      context: ./CacheService # path to your service folder
+      dockerfile: Dockerfile
+    image: personalassistant-cacheservice
+    ports:
+      - "5443:443"
+      - "5442:22"
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.6
+
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=
+      - ASPNETCORE_HTTPS_PORTS=443
+      # - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=assistantservice
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AssistantService.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  AssistantService:
+    build:
+      context: ./AssistantService # path to your service folder
+      dockerfile: Dockerfile
+    image: personalassistant-assistantservice
+
+    ports:
+      - "6443:443"
+      - "6442:22"
+    networks:
+      grpc_network:
+        ipv4_address: 10.18.0.7
+
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=
+      - ASPNETCORE_HTTPS_PORTS=443
+      # - ASPNETCORE_URLS=https://+:443
+      # - ASPNETCORE_Kestrel__Certificates__Default__Password=LyH25/a/pVFbB4Zj
+      # - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=assistantservice
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/AssistantService.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro

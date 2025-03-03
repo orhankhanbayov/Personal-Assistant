@@ -7,3 +7,4 @@ public interface IAssistantService
 	Task<string> ProcessInProgressRequests(TwilioInputForm input, User user);
 	Task ProccessCompletedCall(TwilioInputForm input, User user);
 }
+// virtual abstract protected sealed override 

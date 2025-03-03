@@ -8,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddGrpc();
 
+// builder.Services.AddAuthentication(); // Add this if you use app.UseAuthentication()
+builder.Services.AddAuthorization(); // This is required for app.UseAuthorization()
+
 builder.Services.AddSingleton<ITwilioRestClient>(sp =>
 {
 	string? accountSid = builder.Configuration["Twilio:AccountSid"];
@@ -20,9 +23,14 @@ builder.Services.Configure<NgrokOptions>(builder.Configuration.GetSection("Ngrok
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<TwilioPhoneService>();
-
+app.UseHsts();
 app.UseHttpsRedirection();
 
-app.UseHsts();
+app.UseRouting();
+
+//app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapGrpcService<TwilioPhoneService>();
+
 app.Run();
