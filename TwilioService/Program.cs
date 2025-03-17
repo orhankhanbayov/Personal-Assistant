@@ -5,11 +5,10 @@ using TwilioService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddGrpc();
 
 // builder.Services.AddAuthentication(); // Add this if you use app.UseAuthentication()
-builder.Services.AddAuthorization(); // This is required for app.UseAuthorization()
+builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<ITwilioRestClient>(sp =>
 {
